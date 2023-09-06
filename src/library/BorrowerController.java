@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import model.Borrower;
 import service.BorrowerService;
-import service.BorrowerServiceImpl;
+import service.implementation.BorrowerServiceImpl;
 public class BorrowerController {
     private static Scanner scanner = new Scanner(System.in);
     private static BorrowerService borrowerService = new BorrowerServiceImpl();

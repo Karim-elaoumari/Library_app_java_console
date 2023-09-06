@@ -1,11 +1,10 @@
 package library;
 
-import helper.ConsoleController;
+import helper.ConsoleHelper;
 import model.Autor;
 import service.AutorService;
-import service.AutorServiceImpl;
+import service.implementation.AutorServiceImpl;
 
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Scanner;
 
@@ -75,7 +74,7 @@ public class AutorController {
                 String newCountry = scanner.nextLine();
                 authors.get(0).setCountry(newCountry);
             }
-            ConsoleController.clearScreen();
+            ConsoleHelper.clearScreen();
             autorService.editAutor(authors.get(0));
 
         }

@@ -8,5 +8,7 @@ public interface BookService {
     void deleteBook(Book book);
     void editBook(Book book);
     List<Book> getBookByIsbnOrTitle(String isbnOrTitle);
+    List<Book> getStates();
+
 
 }

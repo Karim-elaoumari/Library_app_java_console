@@ -3,7 +3,10 @@ package helper;
 import model.Book;
 import model.Borrower;
 import model.Reservation;
-import service.*;
+import service.BookService;
+import service.BorrowerService;
+import service.ReservationService;
+import service.implementation.*;
 
 import java.sql.Date;
 import java.text.ParseException;
@@ -14,9 +17,9 @@ import java.util.Scanner;
 public class ReservationHelper {
 
     private  Scanner scanner = new Scanner(System.in);
-    private  ReservationService reservationService = new ReservationServiceImpl();
-    private  BorrowerService borrowerService = new BorrowerServiceImpl();
-    private  BookService bookService = new BookServiceImpl();
+    private ReservationService reservationService = new ReservationServiceImpl();
+    private BorrowerService borrowerService = new BorrowerServiceImpl();
+    private BookService bookService = new BookServiceImpl();
 
     public Book findBook(){
         while (true) {

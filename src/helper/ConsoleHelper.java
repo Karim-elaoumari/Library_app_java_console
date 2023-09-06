@@ -1,7 +1,7 @@
 package helper;
 import java.util.Scanner;
 
-public class ConsoleController {
+public class ConsoleHelper {
     public static void clearScreen() {
 
             System.out.print("\033[H\033[2J");
@@ -26,7 +26,8 @@ public class ConsoleController {
         System.out.println("10. Get Author Books");
         System.out.println("11. Borrow New Book");
         System.out.println("12. Return Book");
-        System.out.println("13. Exit");
+        System.out.println("13. generate States");
+        System.out.println("14. Exit");
         System.out.print("Choose an option: ");
 
     }
@@ -35,7 +36,7 @@ public class ConsoleController {
         System.out.println("Press enter to return to the menu");
         Scanner scanner = new Scanner(System.in);
         scanner.nextLine();
-        ConsoleController.clearScreen();
+        ConsoleHelper.clearScreen();
 
     }
 

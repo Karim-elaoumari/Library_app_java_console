@@ -9,7 +9,27 @@ public class Book {
     private String isbn;
     private Integer quantity;
     private String language;
-
+    private Integer quantityBorrowed;
+    private Integer quantityLosted;
+    public Book(int id, String title, Autor autor, String isbn, Integer quantity, String language, Integer quantityBorrowed, Integer quantityLosted) {
+        this.id = id;
+        this.title = title;
+        this.autor = autor;
+        this.isbn = isbn;
+        this.quantity = quantity;
+        this.language = language;
+        this.quantityBorrowed = quantityBorrowed;
+        this.quantityLosted = quantityLosted;
+    }
+    public Book(String title, Autor autor, String isbn, Integer quantity, String language, Integer quantityBorrowed, Integer quantityLosted) {
+        this.title = title;
+        this.autor = autor;
+        this.isbn = isbn;
+        this.quantity = quantity;
+        this.language = language;
+        this.quantityBorrowed = quantityBorrowed;
+        this.quantityLosted = quantityLosted;
+    }
     public Book(int id, String title, Autor autor, String isbn, Integer quantity, String language) {
         this.id = id;
         this.title = title;
@@ -50,6 +70,14 @@ public class Book {
         return language;
     }
 
+    public Integer getQuantityBorrowed() {
+        return quantityBorrowed;
+    }
+
+    public Integer getQuantityLosted() {
+        return quantityLosted;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -74,6 +102,12 @@ public class Book {
         this.language = language;
     }
 
+    public void setQuantityBorrowed(Integer quantityBorrowed){
+        this.quantityBorrowed = quantityBorrowed;
+    }
+    public void setQuantityLosted(Integer quantityLosted){
+        this.quantityLosted = quantityLosted;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

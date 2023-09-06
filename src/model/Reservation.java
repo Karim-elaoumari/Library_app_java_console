@@ -8,7 +8,6 @@ public class Reservation {
     private  Borrower borrower;
     private Date dueDate;
     private Date borrow_date;
-    private int quantity;
     private String status;
 
     public Reservation(int id, Book book, Borrower borrower, Date dueDate, Date borrow_date, String status) {

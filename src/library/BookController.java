@@ -4,8 +4,8 @@ import model.Autor;
 import model.Book;
 
 import java.util.List;
-import  service.BookService;
-import service.BookServiceImpl;
+import service.BookService;
+import service.implementation.BookServiceImpl;
 import java.util.Scanner;
 
 public class BookController {
@@ -108,6 +108,19 @@ public class BookController {
             String choice = scanner.nextLine();
             if (choice.equals("y")) {
                 bookService.deleteBook(searchResults.get(0));
+            }
+        }
+    }
+    public static void getStatesLibrary(){
+        System.out.println("This are the States Of the Library : ");
+        List<Book> books = bookService.getStates();
+        System.out.println("Total Books : "+books.size());
+
+        System.out.print("Do you want to see the list of books ? (y/n) : ");
+        String choice = scanner.nextLine();
+        if (choice.equals("y")) {
+            for (int i = 0; i < books.size(); i++) {
+                System.out.println( i+1+"-"+" Title : " + books.get(i).getTitle() + " | Author : " + books.get(i).getAutor().getName() + " | ISBN : " + books.get(i).getIsbn() + " | Quantity : " + books.get(i).getQuantity() + " | Language : " + books.get(i).getLanguage() + " | Quantity Borrowed : " + books.get(i).getQuantityBorrowed() + " | Quantity Losted : " + books.get(i).getQuantityLosted());
             }
         }
     }

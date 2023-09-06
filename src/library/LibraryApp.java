@@ -1,24 +1,19 @@
 package library;
 
-import service.BookService;
-import service.BookServiceImpl;
-import model.Book;
-
 import java.util.List;
 import java.util.Scanner;
 import service.AutorService;
-import service.AutorServiceImpl;
+import service.implementation.AutorServiceImpl;
 import model.Autor;
-import helper.ConsoleController;
-import  library.BookController;
-import library.AutorController;
+import helper.ConsoleHelper;
+
 public class LibraryApp {
     private static Scanner scanner = new Scanner(System.in);
     private static AutorService autorService = new AutorServiceImpl();
-    public static void main(String[] args) {
-        ConsoleController.printHelloMessage();
+    public static void main(String[] args){
+        ConsoleHelper.printHelloMessage();
         while (true) {
-            ConsoleController.showMenuOptions();
+            ConsoleHelper.showMenuOptions();
             int choice = scanner.nextInt();
             System.out.println("-----------------------------------------------------------------");
             scanner.nextLine();
@@ -60,6 +55,9 @@ public class LibraryApp {
                     returnBook();
                     break;
                 case 13:
+                    getStates();
+                    break;
+                case 14:
                     System.exit(0);
                 default:
                     System.out.println("Invalid choice. Please select a valid option.");
@@ -77,19 +75,20 @@ public class LibraryApp {
             System.out.println("Author found:");
             BookController.addBook(authors.get(0));
         }
-        ConsoleController.retrunToMenu();
+        ConsoleHelper.retrunToMenu();
     }
-    private static void listAvailableBooks() { BookController.listAvailableBooks(); ConsoleController.retrunToMenu();}
-    private static void searchBooks() { BookController.searchBooks(); ConsoleController.retrunToMenu();}
-    private static void editBook() { BookController.editBook(); ConsoleController.retrunToMenu();}
-    private static void deleteBook() { BookController.deleteBook(); ConsoleController.retrunToMenu();}
-    private static void listAuthors() { AutorController.listAuthors(); ConsoleController.retrunToMenu();}
-    private static void addAuthor() { AutorController.addAuthor(); ConsoleController.retrunToMenu();}
-    private static  void deleteAuthor(){ AutorController.deleteAuthor(); ConsoleController.retrunToMenu();}
-    private static void editAuthor(){ AutorController.editAuthor(); ConsoleController.retrunToMenu();}
-    private static void getAutorBooks(){ AutorController.getAutorBooks(); ConsoleController.retrunToMenu();}
-    private static void addReservation(){ ReservationController.addReservation(); ConsoleController.retrunToMenu();}
-    private static  void returnBook(){ ReservationController.returnBook(); ConsoleController.retrunToMenu();}
+    private static void listAvailableBooks() { BookController.listAvailableBooks(); ConsoleHelper.retrunToMenu();}
+    private static void searchBooks() { BookController.searchBooks(); ConsoleHelper.retrunToMenu();}
+    private static void editBook() { BookController.editBook(); ConsoleHelper.retrunToMenu();}
+    private static void deleteBook() { BookController.deleteBook(); ConsoleHelper.retrunToMenu();}
+    private static void listAuthors() { AutorController.listAuthors(); ConsoleHelper.retrunToMenu();}
+    private static void addAuthor() { AutorController.addAuthor(); ConsoleHelper.retrunToMenu();}
+    private static  void deleteAuthor(){ AutorController.deleteAuthor(); ConsoleHelper.retrunToMenu();}
+    private static void editAuthor(){ AutorController.editAuthor(); ConsoleHelper.retrunToMenu();}
+    private static void getAutorBooks(){ AutorController.getAutorBooks(); ConsoleHelper.retrunToMenu();}
+    private static void addReservation(){ ReservationController.addReservation(); ConsoleHelper.retrunToMenu();}
+    private static  void returnBook(){ ReservationController.returnBook(); ConsoleHelper.retrunToMenu();}
+    private static  void getStates(){ BookController.getStatesLibrary(); ConsoleHelper.retrunToMenu();}
 
 
 }

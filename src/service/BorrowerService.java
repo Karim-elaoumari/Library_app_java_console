@@ -1,6 +1,5 @@
 package service;
 
-import model.Book;
 import model.Borrower;
 
 import java.util.List;
