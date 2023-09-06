@@ -1,5 +1,6 @@
 package library;
 
+import helper.ConsoleHelper;
 import model.Autor;
 import model.Book;
 
@@ -17,12 +18,24 @@ public class BookController {
             System.out.println("No available books in the library.");
         } else {
             System.out.println("Available Books:");
+            System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
+            System.out.printf("%-4s | %-40s | %-20s | %-15s | %-9s | %-20s%n", "No.", "Title", "Author", "ISBN", "Quantity", "Language");
+            System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
 
             for (int i = 0; i < availableBooks.size(); i++) {
-                System.out.println( i+1+"-"+" Title : " + availableBooks.get(i).getTitle() + " | Author : " + availableBooks.get(i).getAutor().getName() + " | ISBN : " + availableBooks.get(i).getIsbn() + " | Quantity : " + availableBooks.get(i).getQuantity() + " | Language : " + availableBooks.get(i).getLanguage());
+                System.out.printf("%-4d | %-40s | %-20s | %-15s | %-9d | %-20s%n",
+                        (i + 1),
+                        availableBooks.get(i).getTitle(),
+                        availableBooks.get(i).getAutor().getName(),
+                        availableBooks.get(i).getIsbn(),
+                        availableBooks.get(i).getQuantity(),
+                        availableBooks.get(i).getLanguage()
+                );
+                System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
             }
 
         }
+        ConsoleHelper.retrunToMenu();
 
     }
 
@@ -45,6 +58,7 @@ public class BookController {
                 language
         );
         bookService.addBook(newBook);
+        ConsoleHelper.retrunToMenu();
     }
     public static void searchBooks() {
         System.out.print("Enter search keyword: ");
@@ -55,8 +69,20 @@ public class BookController {
             System.out.println("No books found matching the search criteria.");
         } else {
             System.out.println("Search Results:");
+            System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
+            System.out.printf("%-4s | %-40s | %-20s | %-15s | %-9s | %-20s%n", "No.", "Title", "Author", "ISBN", "Quantity", "Language");
+            System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
+
             for (int i = 0; i < searchResults.size(); i++) {
-                System.out.println( i+1+"-"+" Title : " + searchResults.get(i).getTitle() + " | Author : " + searchResults.get(i).getAutor().getName() + " | ISBN : " + searchResults.get(i).getIsbn() + " | Quantity : " + searchResults.get(i).getQuantity() + " | Language : " + searchResults.get(i).getLanguage());
+                System.out.printf("%-4d | %-40s | %-20s | %-15s | %-9d | %-20s%n",
+                        (i + 1),
+                        searchResults.get(i).getTitle(),
+                        searchResults.get(i).getAutor().getName(),
+                        searchResults.get(i).getIsbn(),
+                        searchResults.get(i).getQuantity(),
+                        searchResults.get(i).getLanguage()
+                );
+                System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
             }
         }
     }
@@ -79,6 +105,7 @@ public class BookController {
             System.out.print("Do you want to edit Quantity  ? (y/n) : ");
             choice = scanner.nextLine();
             if (choice.equals("y")) {
+                scanner.nextLine();
                 System.out.print("Enter new Quantity : ");
                 int newQuantity = scanner.nextInt();
                 searchResults.get(0).setQuantity(newQuantity);
@@ -94,6 +121,7 @@ public class BookController {
 
 
         }
+        ConsoleHelper.retrunToMenu();
     }
     public static void deleteBook(){
         System.out.print("Enter book title or ISBN : ");
@@ -110,19 +138,37 @@ public class BookController {
                 bookService.deleteBook(searchResults.get(0));
             }
         }
+        ConsoleHelper.retrunToMenu();
     }
     public static void getStatesLibrary(){
         System.out.println("This are the States Of the Library : ");
         List<Book> books = bookService.getStates();
         System.out.println("Total Books : "+books.size());
-
+        System.out.println("Total Books Quantities Available : "+books.stream().mapToInt(Book::getQuantity).sum());
+        System.out.println("Total Books Quantities Borrowed : "+books.stream().mapToInt(Book::getQuantityBorrowed).sum());
+        System.out.println("Total Books Quantities Losted : "+books.stream().mapToInt(Book::getQuantityLosted).sum());
         System.out.print("Do you want to see the list of books ? (y/n) : ");
         String choice = scanner.nextLine();
         if (choice.equals("y")) {
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.printf("%-4s | %-40s | %-20s | %-15s | %-9s | %-20s | %-18s | %-15s%n", "No.", "Title", "Author", "ISBN", "Quantity", "Language", "Quantity Borrowed", "Quantity Lost |");
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
             for (int i = 0; i < books.size(); i++) {
-                System.out.println( i+1+"-"+" Title : " + books.get(i).getTitle() + " | Author : " + books.get(i).getAutor().getName() + " | ISBN : " + books.get(i).getIsbn() + " | Quantity : " + books.get(i).getQuantity() + " | Language : " + books.get(i).getLanguage() + " | Quantity Borrowed : " + books.get(i).getQuantityBorrowed() + " | Quantity Losted : " + books.get(i).getQuantityLosted());
+                System.out.printf("%-4d | %-40s | %-20s | %-15s | %-9d | %-20s | %-18d | %-15d%n",
+                        (i + 1),
+                        books.get(i).getTitle(),
+                        books.get(i).getAutor().getName(),
+                        books.get(i).getIsbn(),
+                        books.get(i).getQuantity(),
+                        books.get(i).getLanguage(),
+                        books.get(i).getQuantityBorrowed(),
+                        books.get(i).getQuantityLosted()
+                );
+                System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             }
         }
+        ConsoleHelper.retrunToMenu();
     }
 
 }

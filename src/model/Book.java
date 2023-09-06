@@ -9,8 +9,8 @@ public class Book {
     private String isbn;
     private Integer quantity;
     private String language;
-    private Integer quantityBorrowed;
-    private Integer quantityLosted;
+    private Integer quantityBorrowed = 0;
+    private Integer quantityLosted = 0;
     public Book(int id, String title, Autor autor, String isbn, Integer quantity, String language, Integer quantityBorrowed, Integer quantityLosted) {
         this.id = id;
         this.title = title;
@@ -121,17 +121,7 @@ public class Book {
         return Objects.hash(id, title, autor, isbn, quantity, language);
     }
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", autor=" + autor +
-                ", isbn='" + isbn + '\'' +
-                ", quantity=" + quantity +
-                ", language='" + language + '\'' +
-                '}';
-    }
+
 
 }
 

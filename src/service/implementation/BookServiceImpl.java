@@ -67,10 +67,7 @@ public class BookServiceImpl implements BookService {
 // editing a book in the database
     @Override
     public void editBook(Book book){
-        if(this.getBookByIsbnOrTitle(book.getIsbn()).size()>0){
-            System.out.println("Book already exists!");
-        }
-       else if(bookRepository.editBook(book)){
+       if(bookRepository.editBook(book)){
            System.out.println("Book edited successfully!");
        }else {
            System.out.println("Book not edited!");
@@ -100,17 +97,17 @@ public class BookServiceImpl implements BookService {
                 }
                 ResultSet resultBorrowed = bookRepository.getBooksWithStatus("borrowed");
                 ResultSet resultLosted = bookRepository.getBooksWithStatus("losted");
-                for(Book book:books){
-                    while (resultBorrowed.next()){
-                        if(book.getId()==resultBorrowed.getInt("id_book")){
-                            book.setQuantityBorrowed(resultBorrowed.getInt("status_quantity"));
-                        }
-                    }
-                    while (resultLosted.next()){
-
+                while (resultBorrowed.next()){
+                         for(Book book:books){
+                             if(book.getId()==resultBorrowed.getInt("id_book")){
+                                 book.setQuantityBorrowed(resultBorrowed.getInt("status_quantity"));
+                             }
+                         }
+                }
+                while (resultLosted.next()){
+                    for(Book book:books){
                         if(book.getId()==resultLosted.getInt("id_book")){
                             book.setQuantityLosted(resultLosted.getInt("status_quantity"));
-                            System.out.println(resultLosted.getInt("status_quantity"));
                         }
                     }
                 }

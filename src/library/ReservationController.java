@@ -3,6 +3,7 @@ package library;
 import java.util.List;
 import java.util.Scanner;
 
+import helper.ConsoleHelper;
 import model.Borrower;
 import model.Reservation;
 import service.BorrowerService;
@@ -40,6 +41,7 @@ public class ReservationController {
                 }
             }
         }
+        ConsoleHelper.retrunToMenu();
     }
     public static void returnBook(){
         System.out.println("Enter borrower CIN: ");
@@ -66,6 +68,7 @@ public class ReservationController {
                 }
             }
         }
+        ConsoleHelper.retrunToMenu();
 
     }
 

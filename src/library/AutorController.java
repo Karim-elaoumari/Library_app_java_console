@@ -17,11 +17,20 @@ public class AutorController {
             System.out.println("No authors in the library.");
         } else {
             System.out.println("Authors:");
+            System.out.println("-------------------------------------------------------");
+            System.out.printf("%-4s | %-30s | %-15s%n", "No.", "Name", "Country");
+            System.out.println("-------------------------------------------------------");
 
             for (int i = 0; i < authors.size(); i++) {
-                System.out.println( i+1+"-"+" Name : " + authors.get(i).getName() + " | Country : " + authors.get(i).getCountry());
+                System.out.printf("%-4d | %-30s | %-15s%n",
+                        (i + 1),
+                        authors.get(i).getName(),
+                        authors.get(i).getCountry()
+                );
+                System.out.println("-------------------------------------------------------");
             }
         }
+        ConsoleHelper.retrunToMenu();
     }
     public static void addAuthor() {
         System.out.print("Enter author name: ");
@@ -36,6 +45,7 @@ public class AutorController {
         );
         autorService.addAutor(newAuthor);
         newAuthor = null;
+        ConsoleHelper.retrunToMenu();
     }
     public static  void deleteAuthor(){
         System.out.print("Enter author name: ");
@@ -47,6 +57,7 @@ public class AutorController {
             autorService.deleteAutor(authors.get(0));
         }
         authors = null;
+        ConsoleHelper.retrunToMenu();
     }
     public static void editAuthor() {
         System.out.print("Enter author name: ");
@@ -79,6 +90,7 @@ public class AutorController {
 
         }
         authors = null;
+        ConsoleHelper.retrunToMenu();
     }
     public static void getAutorBooks(){
         System.out.print("Enter author name: ");
@@ -96,13 +108,25 @@ public class AutorController {
                 System.out.println("No books found for this author.");
             }
             else{
-                for(int i=0;i<authors.get(0).getBooks().size();i++){
-                    System.out.println(authors.get(0).toString());
-                    System.out.println( i+1+"-"+" Title : " + authors.get(0).getBooks().get(i).getTitle() + " | ISBN : " + authors.get(0).getBooks().get(i).getIsbn() + " | Quantity : " + authors.get(0).getBooks().get(i).getQuantity() + " | Language : " + authors.get(0).getBooks().get(i).getLanguage());
+                System.out.println(authors.get(0).toString());
+                System.out.println("--------------------------------------------------------------------------------------");
+                System.out.printf("%-4s | %-40s | %-15s | %-9s | %-20s%n", "No.", "Title", "ISBN", "Quantity", "Language");
+                System.out.println("--------------------------------------------------------------------------------------");
+
+                for (int i = 0; i < authors.get(0).getBooks().size(); i++) {
+                    System.out.printf("%-4d | %-40s | %-15s | %-9d | %-20s%n",
+                            (i + 1),
+                            authors.get(0).getBooks().get(i).getTitle(),
+                            authors.get(0).getBooks().get(i).getIsbn(),
+                            authors.get(0).getBooks().get(i).getQuantity(),
+                            authors.get(0).getBooks().get(i).getLanguage()
+                    );
+                    System.out.println("----------------------------------------------------------------------------------------");
                 }
             }
         }
         authors = null;
+        ConsoleHelper.retrunToMenu();
 
     }
 }

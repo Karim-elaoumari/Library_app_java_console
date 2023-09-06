@@ -48,26 +48,6 @@ public class Autor {
         this.books = books;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Autor autor = (Autor) o;
-        return id == autor.id && Objects.equals(name, autor.name) && Objects.equals(country, autor.country) && Objects.equals(books, autor.books);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, country, books);
-    }
 
-    @Override
-    public String toString() {
-        return "Autor{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", country='" + country + '\'' +
-                ", books=" + books +
-                '}';
-    }
 }

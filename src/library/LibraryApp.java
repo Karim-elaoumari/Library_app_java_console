@@ -15,47 +15,47 @@ public class LibraryApp {
         while (true) {
             ConsoleHelper.showMenuOptions();
             int choice = scanner.nextInt();
-            System.out.println("-----------------------------------------------------------------");
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------");
             scanner.nextLine();
             switch (choice) {
                 case 1:
                     addBook();
                     break;
                 case 2:
-                    listAvailableBooks();
+                    BookController.listAvailableBooks();
                     break;
                 case 3:
-                    searchBooks();
+                    BookController.searchBooks();
                     break;
                 case 4:
-                    editBook();
+                    BookController.editBook();
                     break;
                 case 5:
-                    deleteBook();
+                    BookController.deleteBook();
                     break;
                 case 6:
-                    listAuthors();
+                    AutorController.listAuthors();
                     break;
                 case 7:
-                    addAuthor();
+                    AutorController.addAuthor();
                     break;
                 case 8:
-                    deleteAuthor();
+                    AutorController.deleteAuthor();
                     break;
                 case 9:
-                    editAuthor();
+                    AutorController.editAuthor();
                     break;
                 case 10:
-                    getAutorBooks();
+                    AutorController.getAutorBooks();
                     break;
                 case 11:
-                    addReservation();
+                    ReservationController.addReservation();
                     break;
                 case 12:
-                    returnBook();
+                    ReservationController.returnBook();
                     break;
                 case 13:
-                    getStates();
+                    BookController.getStatesLibrary();
                     break;
                 case 14:
                     System.exit(0);
@@ -68,27 +68,8 @@ public class LibraryApp {
         System.out.print("Enter Author name: ");
         String author = scanner.nextLine();
         List<Autor> authors = autorService.getAutorByName(author);
-        if (authors.isEmpty()) {
-            System.out.println("No authors found matching the search criteria.");
-            addBook();
-        } else {
-            System.out.println("Author found:");
-            BookController.addBook(authors.get(0));
-        }
+        if (authors.isEmpty()) {System.out.println("No authors found matching the search criteria.");addBook();
+        } else {System.out.println("Author found:");BookController.addBook(authors.get(0));}
         ConsoleHelper.retrunToMenu();
     }
-    private static void listAvailableBooks() { BookController.listAvailableBooks(); ConsoleHelper.retrunToMenu();}
-    private static void searchBooks() { BookController.searchBooks(); ConsoleHelper.retrunToMenu();}
-    private static void editBook() { BookController.editBook(); ConsoleHelper.retrunToMenu();}
-    private static void deleteBook() { BookController.deleteBook(); ConsoleHelper.retrunToMenu();}
-    private static void listAuthors() { AutorController.listAuthors(); ConsoleHelper.retrunToMenu();}
-    private static void addAuthor() { AutorController.addAuthor(); ConsoleHelper.retrunToMenu();}
-    private static  void deleteAuthor(){ AutorController.deleteAuthor(); ConsoleHelper.retrunToMenu();}
-    private static void editAuthor(){ AutorController.editAuthor(); ConsoleHelper.retrunToMenu();}
-    private static void getAutorBooks(){ AutorController.getAutorBooks(); ConsoleHelper.retrunToMenu();}
-    private static void addReservation(){ ReservationController.addReservation(); ConsoleHelper.retrunToMenu();}
-    private static  void returnBook(){ ReservationController.returnBook(); ConsoleHelper.retrunToMenu();}
-    private static  void getStates(){ BookController.getStatesLibrary(); ConsoleHelper.retrunToMenu();}
-
-
 }
