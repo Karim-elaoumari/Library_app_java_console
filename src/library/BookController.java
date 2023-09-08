@@ -65,7 +65,10 @@ public class BookController {
         String keyword = scanner.nextLine();
 
         List<Book> searchResults = bookService.searchBooks(keyword);
-        if (searchResults.isEmpty()) {
+        if(searchResults==null){
+            ConsoleHelper.retrunToMenu();
+        }
+        else if (searchResults.isEmpty()) {
             System.out.println("No books found matching the search criteria.");
         } else {
             System.out.println("Search Results:");
@@ -85,12 +88,15 @@ public class BookController {
                 System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
             }
         }
+        ConsoleHelper.retrunToMenu();
     }
     public static void editBook() {
         System.out.print("Enter book title or ISBN : ");
         String keyword = scanner.nextLine();
         List<Book> searchResults = bookService.getBookByIsbnOrTitle(keyword);
-        if (searchResults.isEmpty()) {
+        if(searchResults==null){
+            ConsoleHelper.retrunToMenu();
+        } else if (searchResults.isEmpty()) {
             System.out.println("No book found matching the search criteria.");
         } else {
             System.out.println("Search Result:");
@@ -127,7 +133,9 @@ public class BookController {
         System.out.print("Enter book title or ISBN : ");
         String keyword = scanner.nextLine();
         List<Book> searchResults = bookService.getBookByIsbnOrTitle(keyword);
-        if (searchResults.isEmpty()) {
+        if(searchResults==null){
+            ConsoleHelper.retrunToMenu();
+        } else if (searchResults.isEmpty()) {
             System.out.println("No book found matching the search criteria.");
         } else {
             System.out.println("Search Result:");

@@ -17,91 +17,59 @@ public class AutorServiceImpl  implements AutorService{
     public AutorRepository autorRepository = new AutorRepository();
     @Override
     public void addAutor(Autor autor){
-       if(autorRepository.insertAutor(autor)==true){
-             System.out.println("Autor added successfully!");
-       }
-       else{
-           System.out.println("Autor not added!");
-       }
+//        validate inputs first
+        if(autor.getName()!=null && autor.getCountry()!=null && autor.getName().length()>0 && autor.getCountry().length()>0){
+            if(autorRepository.insertAutor(autor)==true){
+                System.out.println("Autor added successfully!");
+            }
+            else{System.out.println("Autor not added!");}
+        }
+        else{System.out.println("invalid inputs!");}
+
     }
     @Override
     public List<Autor> getAutors() {
-        List<Autor> autors = new ArrayList<>();
-        ResultSet resultSet = autorRepository.getAutors();
-        if(resultSet!=null){
-            try {
-                while (resultSet.next()) {
-                    Autor autor = new Autor(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name"),
-                            resultSet.getString("country")
-                    );
-                    autors.add(autor);
-                }
-            } catch (SQLException e){
-                e.printStackTrace();
-            }
-        }
-        else{
-            System.out.println("No autors found!");
-        }
+        List<Autor> autors = autorRepository.getAutors();
         return autors;
     }
     @Override
     public void deleteAutor(Autor autor) {
-        if(autorRepository.deleteAutor(autor)==true){
-            System.out.println("Autor deleted successfully!");
+//        valudate autor id
+        if(autor.getId()>0){
+            if(autorRepository.deleteAutor(autor)==true){
+                System.out.println("Author deleted successfully!");
+            }
+            else{System.out.println("Author not deleted!");}
         }
-        else{
-            System.out.println("Autor not deleted!");
-        }
+        else{System.out.println("invalid Author!");}
     }
     @Override
     public void editAutor(Autor autor){
-        if(autorRepository.editAutor(autor)==true){
-            System.out.println("Autor edited successfully!");
+//       validate inputs
+        if(autor.getId()>0 && autor.getName()!=null && autor.getCountry()!=null && autor.getName().length()>0 && autor.getCountry().length()>0){
+            if(autorRepository.editAutor(autor)==true){
+                System.out.println("Author updated successfully!");
+            }
+            else{System.out.println("Author not updated!");}
         }
-        else{
-            System.out.println("Autor not edited!");
-        }
+        else{System.out.println("invalid inputs!");}
     }
     @Override
     public  List<Autor> getAutorByName(String name){
-        List<Autor> autors = new ArrayList<>();
-        ResultSet resultSet = autorRepository.getAutorByName(name);
-        if(resultSet!=null){
-            try {
-                while (resultSet.next()) {
-                    Autor autor = new Autor(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name"),
-                            resultSet.getString("country")
-                    );
-                    autors.add(autor);
-                }
-            } catch (SQLException e){e.printStackTrace();}
+        if(name==null || name.length()==0){
+            System.out.println("invalid Name!");
+            return null;
         }
-        else{System.out.println("No autors found!");}
+        List<Autor> autors = autorRepository.getAutorByName(name);
         return autors;
     }
     @Override
     public Autor getAutorBooks(Autor autor){
-        List<Book> books = new ArrayList<>();
-        ResultSet resultSet = autorRepository.getAutorBooks(autor);
-        if (resultSet != null) {
-            try{
-                while (resultSet.next()) {
-                    Book book = new Book(resultSet.getInt("id"), resultSet.getString("title"),
-                            autor, resultSet.getString("isbn"), resultSet.getInt("quantity"),
-                            resultSet.getString("language")
-                    );
-                    books.add(book);
-                }
-            }
-            catch (SQLException e) {e.printStackTrace();}
+        if(autor==null || autor.getId()<=0 || autor.getName()==null || autor.getName().length()==0){
+            System.out.println("invalid Author!");
+            return null;
         }
-        else{System.out.println("No books found!");}
-        autor.setBooks(books);
+        List<Book> books = autorRepository.getAutorBooks(autor);
         return autor;
     }
 }

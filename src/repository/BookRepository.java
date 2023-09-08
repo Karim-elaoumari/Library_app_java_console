@@ -1,11 +1,15 @@
 package repository;
 
 import java.sql.Connection;
+
+import repository.bookHelper.CreateBookHelper;
 import util.DBUtil;
 import model.Book;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookRepository {
     private Connection connection;
@@ -26,16 +30,20 @@ public class BookRepository {
         } catch (SQLException e){e.printStackTrace();}
         return false;
     }
-    public ResultSet getAvailableBooks(){
+    public List<Book> getAvailableBooks(){
+        List<Book> availableBooks = new ArrayList<>();
         try{
             String query = "SELECT books.id, books.title, books.isbn, books.quantity, books.language,authors.id as author_id, authors.name, authors.country FROM books INNER JOIN authors ON books.author_id = authors.id";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet;
+            while (resultSet.next()) {
+                availableBooks.add(CreateBookHelper.createBook(resultSet));
+            }
         } catch (SQLException e){e.printStackTrace();}
-        return null;
+        return availableBooks;
     }
-    public ResultSet searchBooks(String keyword){
+    public List<Book> searchBooks(String keyword){
+        List<Book> searchResults = new ArrayList<>();
         try{
             String query = "SELECT books.id, books.title, books.isbn, books.quantity, books.language,authors.id as author_id, authors.name, authors.country FROM books INNER JOIN authors ON books.author_id = authors.id WHERE books.title LIKE ? OR books.isbn LIKE ? OR authors.name LIKE ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -43,9 +51,11 @@ public class BookRepository {
             preparedStatement.setString(2, "%" + keyword + "%");
             preparedStatement.setString(3, "%" + keyword + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet;
+            while (resultSet.next()) {
+                searchResults.add(CreateBookHelper.createBook(resultSet));
+            }
         } catch (SQLException e){e.printStackTrace();}
-        return null;
+        return searchResults;
     }
     public boolean deleteBook(Book book){
         try {
@@ -72,15 +82,19 @@ public class BookRepository {
         } catch (SQLException e) {e.printStackTrace();}
         return false;
     }
-    public ResultSet getBookByIsbnOrTitle(String isbnOrTitle){
+    public List<Book> getBookByIsbnOrTitle(String isbnOrTitle){
+        List<Book> books = new ArrayList<Book>();
       try{
             String query = "SELECT books.id, books.title, books.isbn, books.quantity, books.language,authors.id as author_id, authors.name, authors.country FROM books INNER JOIN authors ON books.author_id = authors.id WHERE books.title = ? OR books.isbn = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, isbnOrTitle);
             preparedStatement.setString(2, isbnOrTitle);
-            return preparedStatement.executeQuery();
+            ResultSet resultSet =  preparedStatement.executeQuery();
+              while (resultSet.next()) {
+                  books.add(CreateBookHelper.createBook(resultSet));
+              }
       } catch (SQLException e){e.printStackTrace();}
-      return null;
+      return books;
     }
     public ResultSet getBooksWithStatus(String status){
         try{

@@ -47,9 +47,10 @@ public class ReservationController {
         System.out.println("Enter borrower CIN: ");
         String borrowerCIN = scanner.nextLine();
         List<Borrower> borrowers = borrowerService.getBorrowerByCIN(borrowerCIN);
-        if(borrowers.isEmpty()){
+
+        if(borrowers!=null && borrowers.isEmpty()){
             System.out.println("Borrower not found.");
-        }else{
+        }else if(borrowers!=null){
             List<Reservation> reservations = reservationService.getReservationsByBorrowerCIN(borrowers.get(0).getBorrower_CIN());
             if(reservations.isEmpty()){
                 System.out.println("No reservations found for this borrower.");

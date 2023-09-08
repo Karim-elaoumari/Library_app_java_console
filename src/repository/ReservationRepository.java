@@ -1,11 +1,14 @@
 package repository;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.Autor;
 import model.Book;
 import model.Borrower;
 import model.Reservation;
+import repository.reservationHelper.CreateReservationHelper;
 import util.DBUtil;
 
 public class ReservationRepository {
@@ -37,23 +40,31 @@ public class ReservationRepository {
         }catch (SQLException e){e.printStackTrace();}
         return false;
     }
-    public ResultSet displayReservations(){
+    public List<Reservation> displayReservations(){
+        List<Reservation> reservations = new ArrayList<>();
         try{
             String query = "SELECT reservation.id AS reservation_id, books.id AS book_id, books.title ,books.isbn,books.quantity AS book_quantity,books.language authors.id AS author_id, authors.name AS author_name, borrowers.id AS borrower_id, borrowers.name AS borrower_name,reservstion.status,reservstion.due_date,reservation.borrow_date FROM reservation JOIN books ON reservation.book_id = books.id JOIN authors ON books.author_id = authors.id JOIN borrowers ON reservation.borrower_id = borrowers.id;";
             Statement statement = connection.createStatement();
-            return statement.executeQuery(query);
+            ResultSet resultSet =  statement.executeQuery(query);
+            while (resultSet.next()){
+                reservations.add(CreateReservationHelper.createReservation(resultSet));
+            }
         }catch (SQLException e){e.printStackTrace();}
-        return null;
+        return reservations;
     }
-    public ResultSet getReservationsByBorrowerCIN(String cin){
+    public List<Reservation> getReservationsByBorrowerCIN(String cin){
+        List<Reservation> reservations = new ArrayList<>();
         try{
             String query = "SELECT reservation.id AS reservation_id, books.id AS book_id, books.title ,books.isbn,books.quantity AS book_quantity,books.language, authors.id AS author_id, authors.name AS author_name,authors.country, borrowers.id AS borrower_id, borrowers.name AS borrower_name, borrowers.cin,reservation.status,reservation.due_date,reservation.borrow_date FROM reservation JOIN books ON reservation.book_id = books.id JOIN authors ON books.author_id = authors.id JOIN borrowers ON reservation.borrower_id = borrowers.id WHERE borrowers.cin = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, cin);
             preparedStatement.executeQuery();
-            return preparedStatement.getResultSet();
+            ResultSet resultSet =  preparedStatement.getResultSet();
+            while (resultSet.next()){
+                reservations.add(CreateReservationHelper.createReservation(resultSet));
+            }
         }catch (SQLException e){e.printStackTrace();}
-        return null;
+        return reservations;
     }
     public boolean changeStatusToReturned(Reservation reservation){
         try{

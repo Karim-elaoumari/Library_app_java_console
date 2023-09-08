@@ -3,12 +3,9 @@ package service.implementation;
 import model.Book;
 import repository.BookRepository;
 import service.BookService;
-import service.implementation.bookHelper.CreateBookHelper;
-import util.DBUtil;
+
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
-import model.Autor;
 
 // implementing the BookService interface
 public class BookServiceImpl implements BookService {
@@ -17,7 +14,14 @@ public class BookServiceImpl implements BookService {
     // adding a book to the database
     @Override
     public void addBook(Book book){
-        if(this.getBookByIsbnOrTitle(book.getIsbn()).size()>0){
+        if(book.getIsbn()==null || book.getTitle()==null || book.getIsbn().length()==0
+                || book.getTitle().length()==0 || book.getQuantity()==null || book.getQuantity()<0
+                || book.getLanguage()==null || book.getLanguage().length()==0
+                || book.getAutor()==null || book.getAutor().getId()<0){
+            System.out.println("invalid inputs!");
+            return;
+        }
+        if(bookRepository.getBookByIsbnOrTitle(book.getIsbn()).size()>0){
             System.out.println("Book already exists!");
         }
         else if(bookRepository.insertBook(book)){
@@ -29,35 +33,21 @@ public class BookServiceImpl implements BookService {
 // getting all the available books from the database
     @Override
     public List<Book> getAvailableBooks() {
-        List<Book> availableBooks = new ArrayList<>();
-        ResultSet resultSet = bookRepository.getAvailableBooks();
-        if (resultSet != null){
-            try {
-                while (resultSet.next()) {
-                    availableBooks.add(CreateBookHelper.createBook(resultSet));
-                }
-            } catch (SQLException e) {e.printStackTrace();}
-        }
-        else {System.out.println("No books found!");}
+        List<Book> availableBooks = bookRepository.getAvailableBooks();
         return availableBooks;
     }
     @Override
     public List<Book> searchBooks(String keyword) {
-        List<Book> searchResults = new ArrayList<>();
-        try {
-            ResultSet resultSet = bookRepository.searchBooks(keyword);
-            if (resultSet != null){
-                while (resultSet.next()) {
-                    searchResults.add(CreateBookHelper.createBook(resultSet));
-                }
-            }
-            else {System.out.println("No books found!");}
-        } catch (SQLException e) {e.printStackTrace();}
+        List<Book> searchResults =bookRepository.searchBooks(keyword);
         return searchResults;
     }
 // deleting a book from the database
     @Override
     public void deleteBook(Book book) {
+        if(book.getId()<0){
+            System.out.println("invalid inputs!");
+            return;
+        }
         if (bookRepository.deleteBook(book)) {
             System.out.println("Book deleted successfully!");
         } else {
@@ -67,6 +57,13 @@ public class BookServiceImpl implements BookService {
 // editing a book in the database
     @Override
     public void editBook(Book book){
+        if(book.getId()<0 || book.getIsbn()==null || book.getTitle()==null || book.getIsbn().length()==0
+                || book.getTitle().length()==0 || book.getQuantity()==null || book.getQuantity()<0
+                || book.getLanguage()==null || book.getLanguage().length()==0
+                || book.getAutor()==null || book.getAutor().getId()<0){
+            System.out.println("invalid inputs!");
+            return;
+        }
        if(bookRepository.editBook(book)){
            System.out.println("Book edited successfully!");
        }else {
@@ -76,25 +73,17 @@ public class BookServiceImpl implements BookService {
 // getting a book by its ISBN or title
     @Override
     public  List<Book> getBookByIsbnOrTitle(String isbnOrTitle){
-      List<Book> books = new ArrayList<Book>();
-      try{
-           ResultSet resultSet = bookRepository.getBookByIsbnOrTitle(isbnOrTitle);
-            if (resultSet != null) {
-                while (resultSet.next()) {
-                    books.add(CreateBookHelper.createBook(resultSet));
-                }
-            }else{System.out.println("No books found!");}
-      }catch (SQLException e) {e.printStackTrace();}
-       return books;
+        if(isbnOrTitle==null || isbnOrTitle.length()==0){
+            System.out.println("invalid inputs!");
+            return null;
+        }
+          List<Book> books = bookRepository.getBookByIsbnOrTitle(isbnOrTitle);
+           return books;
     }
     public List<Book> getStates(){
-        List<Book> books = new ArrayList<>();
+        List<Book> books =  bookRepository.getAvailableBooks();
         try{
-            ResultSet resultSet = bookRepository.getAvailableBooks();
-            if(resultSet!=null){
-                while (resultSet.next()){
-                    books.add(CreateBookHelper.createBook(resultSet));
-                }
+            if(books.size()>0){
                 ResultSet resultBorrowed = bookRepository.getBooksWithStatus("borrowed");
                 ResultSet resultLosted = bookRepository.getBooksWithStatus("losted");
                 while (resultBorrowed.next()){

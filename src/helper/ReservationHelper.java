@@ -29,7 +29,10 @@ public class ReservationHelper {
                 break;
             }
             List<Book> books = bookService.getBookByIsbnOrTitle(book);
-            if (books.isEmpty()) {
+            if(books==null){
+                return null;
+            }
+            else if (books.isEmpty()) {
                 System.out.println("No books found matching the search criteria.");
             } else if (books.get(0).getQuantity() == 0) {
                 System.out.println("1-" + " Title : " + books.get(0).getTitle() + " | Author : " + books.get(0).getAutor().getName() + " | ISBN : " + books.get(0).getIsbn() + " | Quantity : " + books.get(0).getQuantity() + " | Language : " + books.get(0).getLanguage());
@@ -41,7 +44,6 @@ public class ReservationHelper {
                 System.out.println("1-" + " Title : " + books.get(0).getTitle() + " | Author : " + books.get(0).getAutor().getName() + " | ISBN : " + books.get(0).getIsbn() + " | Quantity : " + books.get(0).getQuantity() + " | Language : " + books.get(0).getLanguage());
                 System.out.println("-----------------------------------------------------------------");
                 return books.get(0);
-
             }
         }
         return null;
@@ -51,7 +53,10 @@ public class ReservationHelper {
         System.out.println("Enter borrower CIN: ");
         String borrowerCIN = scanner.nextLine();
         List<Borrower> borrowers = borrowerService.getBorrowerByCIN(borrowerCIN);
-        if(borrowers.isEmpty()){
+        if(borrowers==null){
+            return null;
+        }
+        else if(borrowers.isEmpty()){
             System.out.println("Enter borrower name: ");
             String borrowerName = scanner.nextLine();
             Borrower newBorrower = new Borrower(borrowerCIN,borrowerName);

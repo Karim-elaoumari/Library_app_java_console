@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AutorRepository {
     private Connection connection;
@@ -25,15 +27,24 @@ public class AutorRepository {
         }
         return false;
     }
-    public ResultSet getAutors() {
+    public List<Autor> getAutors() {
+        List<Autor> autors = new ArrayList<>();
         try {
             String query = "SELECT * FROM authors";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            return preparedStatement.executeQuery();
+            ResultSet resultSet =  preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Autor autor = new Autor(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("country")
+                );
+                autors.add(autor);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return autors;
     }
     public boolean deleteAutor(Autor autor){
             try {
@@ -61,26 +72,42 @@ public class AutorRepository {
         }
         return false;
     }
-    public ResultSet getAutorByName(String name){
+    public List<Autor> getAutorByName(String name){
+        List<Autor> autors = new ArrayList<>();
         try{
             String query = "SELECT * FROM authors WHERE name = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, name);
-            return preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Autor autor = new Autor(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("country")
+                );
+                autors.add(autor);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return autors;
     }
-    public ResultSet getAutorBooks(Autor autor){
+    public List<Book> getAutorBooks(Autor autor){
+        List<Book> books = new ArrayList<>();
         try{
             String query = "SELECT * FROM books WHERE author_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, autor.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet;
+            while (resultSet.next()) {
+                Book book = new Book(resultSet.getInt("id"), resultSet.getString("title"),
+                        autor, resultSet.getString("isbn"), resultSet.getInt("quantity"),
+                        resultSet.getString("language")
+                );
+                books.add(book);
+            }
         }
         catch (SQLException e) {e.printStackTrace();}
-        return null;
+        return books;
     }
 }

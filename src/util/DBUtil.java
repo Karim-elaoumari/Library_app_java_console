@@ -16,7 +16,7 @@ public class DBUtil {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return connection;//////////////////////////////////////////////////;.
+            return connection;
         }
     }
 
