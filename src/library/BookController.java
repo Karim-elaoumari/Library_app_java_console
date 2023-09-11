@@ -1,9 +1,9 @@
 package library;
 
 import helper.ConsoleHelper;
+import helper.FileCreator;
 import model.Autor;
 import model.Book;
-
 import java.util.List;
 import service.BookService;
 import service.implementation.BookServiceImpl;
@@ -175,6 +175,13 @@ public class BookController {
                 );
                 System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             }
+        }
+        System.out.print("Do you want to generate an Excel file for this statistics ? (y/n) : ");
+        choice = scanner.nextLine();
+        if (choice.equals("y")) {
+            System.out.print("Enter the name of the file : ");
+            String filename = scanner.nextLine();
+            FileCreator.createExcelFile(books,filename);
         }
         ConsoleHelper.retrunToMenu();
     }
