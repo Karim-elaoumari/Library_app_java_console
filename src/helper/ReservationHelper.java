@@ -3,6 +3,7 @@ package helper;
 import model.Book;
 import model.Borrower;
 import model.Reservation;
+import model.Result;
 import service.BookService;
 import service.BorrowerService;
 import service.ReservationService;
@@ -78,10 +79,16 @@ public class ReservationHelper {
             return false;
         } else {
             if (borrower.getId() == 0) {
-                borrowerService.addBorrower(borrower);
-                borrower.setId(borrowerService.getBorrowerByCIN(borrower.getBorrower_CIN()).get(0).getId());
+                Result result = borrowerService.addBorrower(borrower);
+                if (result.getStatus() != 201) {
+                    borrower.setId(borrowerService.getBorrowerByCIN(borrower.getBorrower_CIN()).get(0).getId());
+                }else{
+                    System.out.println(result.getMessage());
+                }
+
             }
-            reservationService.addReservation(new Reservation(book, borrower, sqlDate, new Date(System.currentTimeMillis()), "borrowed"));
+            Result result = reservationService.addReservation(new Reservation(book, borrower, sqlDate, new Date(System.currentTimeMillis()), "borrowed"));
+            System.out.println(result.getMessage());
             return true;
         }
     }

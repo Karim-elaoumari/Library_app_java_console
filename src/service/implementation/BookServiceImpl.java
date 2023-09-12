@@ -1,6 +1,7 @@
 package service.implementation;
 
 import model.Book;
+import model.Result;
 import repository.BookRepository;
 import service.BookService;
 
@@ -13,22 +14,27 @@ public class BookServiceImpl implements BookService {
     private BookRepository bookRepository = new BookRepository();
     // adding a book to the database
     @Override
-    public void addBook(Book book){
+    public Result addBook(Book book){
         if(book.getIsbn()==null || book.getTitle()==null || book.getIsbn().length()==0
                 || book.getTitle().length()==0 || book.getQuantity()==null || book.getQuantity()<0
                 || book.getLanguage()==null || book.getLanguage().length()==0
                 || book.getAutor()==null || book.getAutor().getId()<0){
-            System.out.println("invalid inputs!");
-            return;
+            Result result = new Result(400,"invalid inputs!");
+            return result;
         }
         if(bookRepository.getBookByIsbnOrTitle(book.getIsbn()).size()>0){
-            System.out.println("Book already exists!");
+            Result result = new Result(400,"Book already exists!");
+            return result;
         }
         else if(bookRepository.insertBook(book)){
-            System.out.println("Book added successfully!");
-        } else {
-            System.out.println("Book not added!");
+            Result result = new Result(201,"Book added successfully!");
+            return result;
         }
+        else {
+            Result result = new Result(500,"Book not added!");
+            return result;
+        }
+
     }
 // getting all the available books from the database
     @Override
@@ -43,31 +49,37 @@ public class BookServiceImpl implements BookService {
     }
 // deleting a book from the database
     @Override
-    public void deleteBook(Book book) {
+    public Result deleteBook(Book book) {
         if(book.getId()<0){
-            System.out.println("invalid inputs!");
-            return;
+            Result result = new Result(400,"invalid inputs!");
+            return result;
         }
         if (bookRepository.deleteBook(book)) {
-            System.out.println("Book deleted successfully!");
-        } else {
-            System.out.println("Book not deleted!");
+            Result result = new Result(200, "Book deleted successfully!");
+            return result;
+        }
+        else {
+            Result result = new Result(500, "Book not deleted!");
+            return result;
         }
     }
 // editing a book in the database
     @Override
-    public void editBook(Book book){
+    public Result editBook(Book book){
         if(book.getId()<0 || book.getIsbn()==null || book.getTitle()==null || book.getIsbn().length()==0
                 || book.getTitle().length()==0 || book.getQuantity()==null || book.getQuantity()<0
                 || book.getLanguage()==null || book.getLanguage().length()==0
                 || book.getAutor()==null || book.getAutor().getId()<0){
-            System.out.println("invalid inputs!");
-            return;
+            Result result = new Result(400,"invalid inputs!");
+            return result;
         }
        if(bookRepository.editBook(book)){
-           System.out.println("Book edited successfully!");
-       }else {
-           System.out.println("Book not edited!");
+              Result result = new Result(200,"Book edited successfully!");
+              return result;
+       }
+       else {
+              Result result = new Result(500,"Book not edited!");
+              return result;
        }
     }
 // getting a book by its ISBN or title

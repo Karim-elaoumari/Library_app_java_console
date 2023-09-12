@@ -1,6 +1,8 @@
 package service.implementation;
 import model.Reservation;
 import java.util.List;
+
+import model.Result;
 import repository.ReservationRepository;
 import service.ReservationService;
 import java.sql.SQLException;
@@ -10,22 +12,32 @@ import repository.reservationHelper.CreateReservationHelper;
 public class ReservationServiceImpl implements ReservationService {
    private ReservationRepository reservationRepository = new ReservationRepository();
     @Override
-    public void addReservation(Reservation reservation) {
+    public Result addReservation(Reservation reservation) {
         if(reservation.getBook()==null || reservation.getBorrower()==null || reservation.getDueDate()==null || reservation.getBook().getId()<0 || reservation.getBorrower().getId()<0 ){
-            System.out.println("invalid inputs!");
-            return;
+            Result result = new Result(400,"invalid inputs!");
+            return result;
         }
-        if(reservationRepository.addReservation(reservation)==true){System.out.println("Reservation added successfully!");
-        } else{System.out.println("Reservation not added!");}
+        if(reservationRepository.addReservation(reservation)==true){
+            Result result = new Result(200,"Reservation added successfully!");
+            return result;
+        } else{
+            Result result = new Result(500,"Reservation not added!");
+            return result;
+        }
     }
     @Override
-    public  void deleteReservation(Reservation reservation){
+    public  Result deleteReservation(Reservation reservation){
         if(reservation.getId()<0){
-            System.out.println("invalid inputs!");
-            return;
+            Result result = new Result(400,"invalid inputs!");
+            return result;
         }
-        if(reservationRepository.deleteReservation(reservation)==true){System.out.println("Reservation deleted successfully!");
-        }else{System.out.println("Reservation not deleted!");}
+        if(reservationRepository.deleteReservation(reservation)==true){
+            Result result = new Result(200,"Reservation deleted successfully!");
+            return result;
+        }else{
+            Result result = new Result(500,"Reservation not deleted!");
+            return result;
+        }
     }
     @Override
     public  List<Reservation> displayReservations(){
@@ -43,13 +55,18 @@ public class ReservationServiceImpl implements ReservationService {
         return reservations;
     }
     @Override
-    public void changeStatusToReturned(Reservation reservation){
+    public Result changeStatusToReturned(Reservation reservation){
          if(reservation.getId()<0){
-              System.out.println("invalid inputs!");
-              return;
+            Result result = new Result(400,"invalid inputs!");
+            return result;
          }
-       if (reservationRepository.changeStatusToReturned(reservation)==true){System.out.println("Reservation status changed successfully!");
-       }else{System.out.println("Reservation status not changed!");}
+       if (reservationRepository.changeStatusToReturned(reservation)==true){
+            Result result = new Result(200,"Reservation status changed successfully!");
+            return result;
+        }else{
+            Result result = new Result(500,"Reservation status not changed!");
+            return result;
+        }
      }
 
 

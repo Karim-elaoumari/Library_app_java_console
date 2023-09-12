@@ -6,6 +6,7 @@ import java.util.Scanner;
 import helper.ConsoleHelper;
 import model.Borrower;
 import model.Reservation;
+import model.Result;
 import service.BorrowerService;
 import service.ReservationService;
 import service.implementation.ReservationServiceImpl;
@@ -65,7 +66,8 @@ public class ReservationController {
                 if(reservationNumber == 0){
                     System.out.println("Operation canceled.");
                 }else{
-                    reservationService.changeStatusToReturned(reservations.get(reservationNumber-1));
+                    Result result = reservationService.changeStatusToReturned(reservations.get(reservationNumber-1));
+                    System.out.println(result.getMessage());
                 }
             }
         }

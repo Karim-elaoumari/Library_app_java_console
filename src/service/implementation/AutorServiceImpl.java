@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.List;
 import model.Autor;
 import model.Book;
+import model.Result;
 import repository.AutorRepository;
 import service.AutorService;
 import util.DBUtil;
@@ -16,16 +17,21 @@ import java.util.ArrayList;
 public class AutorServiceImpl  implements AutorService{
     public AutorRepository autorRepository = new AutorRepository();
     @Override
-    public void addAutor(Autor autor){
-//        validate inputs first
+    public Result addAutor(Autor autor){
         if(autor.getName()!=null && autor.getCountry()!=null && autor.getName().length()>0 && autor.getCountry().length()>0){
             if(autorRepository.insertAutor(autor)==true){
-                System.out.println("Autor added successfully!");
+                Result result = new Result(201,"Autor added successfully!");
+                return result;
             }
-            else{System.out.println("Autor not added!");}
+            else{
+                Result result = new Result(500,"Autor not added!");
+                return result;
+            }
         }
-        else{System.out.println("invalid inputs!");}
-
+        else{
+            Result result = new Result(400,"invalid inputs!");
+            return result;
+        }
     }
     @Override
     public List<Autor> getAutors() {
@@ -33,26 +39,38 @@ public class AutorServiceImpl  implements AutorService{
         return autors;
     }
     @Override
-    public void deleteAutor(Autor autor) {
-//        valudate autor id
-        if(autor.getId()>0){
-            if(autorRepository.deleteAutor(autor)==true){
-                System.out.println("Author deleted successfully!");
+    public Result deleteAutor(Autor autor) {
+        if (autor.getId() > 0) {
+            if (autorRepository.deleteAutor(autor) == true) {
+                Result result = new Result(200, "Autor deleted successfully!");
+                return result;
+            } else {
+                Result result = new Result(500, "Autor not deleted!");
+                return result;
             }
-            else{System.out.println("Author not deleted!");}
+        } else {
+            Result result = new Result(400, "invalid inputs!");
+            return result;
         }
-        else{System.out.println("invalid Author!");}
     }
+
     @Override
-    public void editAutor(Autor autor){
+    public Result editAutor(Autor autor){
 //       validate inputs
         if(autor.getId()>0 && autor.getName()!=null && autor.getCountry()!=null && autor.getName().length()>0 && autor.getCountry().length()>0){
             if(autorRepository.editAutor(autor)==true){
-                System.out.println("Author updated successfully!");
+               Result result = new Result(200,"Autor updated successfully!");
+                return result;
             }
-            else{System.out.println("Author not updated!");}
+            else{
+                Result result = new Result(500,"Autor not updated!");
+                return result;
+            }
         }
-        else{System.out.println("invalid inputs!");}
+        else{
+            Result result = new Result(400,"invalid inputs!");
+            return result;
+        }
     }
     @Override
     public  List<Autor> getAutorByName(String name){

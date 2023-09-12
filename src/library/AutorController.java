@@ -2,6 +2,7 @@ package library;
 
 import helper.ConsoleHelper;
 import model.Autor;
+import model.Result;
 import service.AutorService;
 import service.implementation.AutorServiceImpl;
 
@@ -43,8 +44,12 @@ public class AutorController {
                 name,
                 country
         );
-        autorService.addAutor(newAuthor);
-        newAuthor = null;
+        Result result = autorService.addAutor(newAuthor);
+        if(result.isSuccess()){
+            System.out.println(result.getMessage());
+        }else{
+            System.out.println(result.getMessage());
+        }
         ConsoleHelper.retrunToMenu();
     }
     public static  void deleteAuthor(){
@@ -54,7 +59,12 @@ public class AutorController {
         if (authors.isEmpty()) {
             System.out.println("No authors found matching the search criteria.");
         } else {
-            autorService.deleteAutor(authors.get(0));
+           Result result =  autorService.deleteAutor(authors.get(0));
+           if (result.isSuccess()){
+               System.out.println(result.getMessage());
+              }else{
+                System.out.println(result.getMessage());
+           }
         }
         authors = null;
         ConsoleHelper.retrunToMenu();
@@ -86,7 +96,12 @@ public class AutorController {
                 authors.get(0).setCountry(newCountry);
             }
             ConsoleHelper.clearScreen();
-            autorService.editAutor(authors.get(0));
+            Result result = autorService.editAutor(authors.get(0));
+            if (result.isSuccess()) {
+                System.out.println(result.getMessage());
+            } else {
+                System.out.println(result.getMessage());
+            }
 
         }
         authors = null;

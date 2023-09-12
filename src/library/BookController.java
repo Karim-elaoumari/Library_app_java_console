@@ -5,6 +5,8 @@ import helper.FileCreator;
 import model.Autor;
 import model.Book;
 import java.util.List;
+
+import model.Result;
 import service.BookService;
 import service.implementation.BookServiceImpl;
 import java.util.Scanner;
@@ -21,7 +23,6 @@ public class BookController {
             System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
             System.out.printf("%-4s | %-40s | %-20s | %-15s | %-9s | %-20s%n", "No.", "Title", "Author", "ISBN", "Quantity", "Language");
             System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
-
             for (int i = 0; i < availableBooks.size(); i++) {
                 System.out.printf("%-4d | %-40s | %-20s | %-15s | %-9d | %-20s%n",
                         (i + 1),
@@ -33,12 +34,9 @@ public class BookController {
                 );
                 System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
             }
-
         }
         ConsoleHelper.retrunToMenu();
-
     }
-
     public static void addBook(Autor autor){
         System.out.print("Enter book title: ");
         String title = scanner.nextLine();
@@ -57,7 +55,12 @@ public class BookController {
                 quantity,
                 language
         );
-        bookService.addBook(newBook);
+        Result result = bookService.addBook(newBook);
+        if (result.isSuccess()) {
+            System.out.println(result.getMessage());
+        } else {
+            System.out.println(result.getMessage());
+        }
         ConsoleHelper.retrunToMenu();
     }
     public static void searchBooks() {
@@ -123,9 +126,12 @@ public class BookController {
                 String newLanguage = scanner.nextLine();
                 searchResults.get(0).setLanguage(newLanguage);
             }
-            bookService.editBook(searchResults.get(0));
-
-
+            Result result = bookService.editBook(searchResults.get(0));
+            if (result.isSuccess()) {
+                System.out.println(result.getMessage());
+            } else {
+                System.out.println(result.getMessage());
+            }
         }
         ConsoleHelper.retrunToMenu();
     }
@@ -143,7 +149,12 @@ public class BookController {
             System.out.print("Do you want to delete this book ? (y/n) : ");
             String choice = scanner.nextLine();
             if (choice.equals("y")) {
-                bookService.deleteBook(searchResults.get(0));
+                Result result = bookService.deleteBook(searchResults.get(0));
+                if (result.isSuccess()) {
+                    System.out.println(result.getMessage());
+                } else {
+                    System.out.println(result.getMessage());
+                }
             }
         }
         ConsoleHelper.retrunToMenu();
@@ -155,13 +166,14 @@ public class BookController {
         System.out.println("Total Books Quantities Available : "+books.stream().mapToInt(Book::getQuantity).sum());
         System.out.println("Total Books Quantities Borrowed : "+books.stream().mapToInt(Book::getQuantityBorrowed).sum());
         System.out.println("Total Books Quantities Losted : "+books.stream().mapToInt(Book::getQuantityLosted).sum());
-        System.out.print("Do you want to see the list of books ? (y/n) : ");
+        System.out.println("Do you want to :");
+        System.out.println("1. View List of books with states");
+        System.out.println("2. Genearate Excel Report");
         String choice = scanner.nextLine();
-        if (choice.equals("y")) {
+        if (choice.equals("1")) {
             System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.printf("%-4s | %-40s | %-20s | %-15s | %-9s | %-20s | %-18s | %-15s%n", "No.", "Title", "Author", "ISBN", "Quantity", "Language", "Quantity Borrowed", "Quantity Lost |");
             System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-
             for (int i = 0; i < books.size(); i++) {
                 System.out.printf("%-4d | %-40s | %-20s | %-15s | %-9d | %-20s | %-18d | %-15d%n",
                         (i + 1),
@@ -175,15 +187,13 @@ public class BookController {
                 );
                 System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             }
-        }
-        System.out.print("Do you want to generate an Excel file for this statistics ? (y/n) : ");
-        choice = scanner.nextLine();
-        if (choice.equals("y")) {
+        } else if (choice.equals("2")) {
             System.out.print("Enter the name of the file : ");
             String filename = scanner.nextLine();
             FileCreator.createExcelFile(books,filename);
+        }else{
+            System.out.println("Invalid Choice");
         }
         ConsoleHelper.retrunToMenu();
     }
-
 }

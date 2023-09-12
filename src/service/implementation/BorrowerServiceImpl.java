@@ -1,6 +1,7 @@
 package service.implementation;
 
 import model.Borrower;
+import model.Result;
 import repository.BorrowerRepository;
 import service.BorrowerService;
 import java.sql.ResultSet;
@@ -10,22 +11,32 @@ import java.util.List;
 public class BorrowerServiceImpl implements BorrowerService {
     private BorrowerRepository borrowerRepository = new BorrowerRepository();
     @Override
-    public void addBorrower(Borrower borrower){
+    public Result addBorrower(Borrower borrower){
         if(borrower.getBorrower_name()==null || borrower.getBorrower_CIN()==null || borrower.getBorrower_name().length()==0
                 || borrower.getBorrower_CIN().length()==0){
-            System.out.println("invalid inputs!");
-            return;
+            Result result = new Result(400,"invalid inputs!");
+            return result;
         }
-        if (borrowerRepository.addBorrower(borrower)){System.out.println("Borrower added successfully!");
-        }else{System.out.println("Borrower not added!");}
+        if (borrowerRepository.addBorrower(borrower)){
+            Result result = new Result(200,"Borrower added successfully!");
+            return result;
+        }else{
+            Result result = new Result(500,"Borrower not added!");
+            return result;
+        }
     }
-    public void deleteBorrower(Borrower borrower){
+    public Result deleteBorrower(Borrower borrower){
         if(borrower.getBorrower_CIN()==null || borrower.getBorrower_CIN().length()==0){
-            System.out.println("invalid inputs!");
-            return;
+            Result result = new Result(400,"invalid inputs!");
+            return result;
         }
-        if (borrowerRepository.deleteBorrower(borrower)){System.out.println("Borrower deleted successfully!");
-        }else{System.out.println("Borrower not deleted!");}
+        if (borrowerRepository.deleteBorrower(borrower)){
+            Result result = new Result(200,"Borrower deleted successfully!");
+            return result;
+        }else{
+            Result result = new Result(500,"Borrower not deleted!");
+            return result;
+        }
     }
     public List<Borrower> displayBorrowers(){
         List<Borrower> borrowers = borrowerRepository.displayBorrowers();
